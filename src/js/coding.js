@@ -1,10 +1,10 @@
 window.onload = function(){
 
-	var navHeight 	 	= $('nav').height();
-	var resultHeight 	= $('#result').height();
-	var sideWidth 		= $('#side').width();
-	var side_topHeight 	= $('#side_top').height();
-	var berheight 		= $('#nav_ber').height();
+	navHeight 	 	= $('nav').height();
+	resultHeight 	= $('#result').height();
+	sideWidth 		= $('#side').width();
+	side_topHeight 	= $('#side_top').height();
+	berheight 		= $('#nav_ber').height();
     
     language_setting();
 
@@ -15,48 +15,6 @@ window.onload = function(){
 	changeTab('#output_tab');
 	fileChangeTab(0)
 
-	function resize() {
-
-		var wh = $(window).height();
-		var ww = $(window).width();
-
-		$('#contain').height(wh - navHeight);
-		$('#contain').width(ww);
-		$('#editor').height(wh - ( navHeight + resultHeight + berheight) );
-		$('#room_menber').height(wh - ( navHeight + side_topHeight ) );
-		$('#main').width( ww );
-
-		editor = ace.edit("editor");
-		editor.$blockScrolling = Infinity;
-		editor.getSession().setUseWrapMode(true);
-		editor.setOptions({
-			enableBasicAutocompletion: true,
-			enableSnippets: true,
-			enableLiveAutocompletion: true
-		});
-		editor.setTheme("ace/theme/monokai");
-		editor.getSession().setMode("ace/mode/" + editor_highlight);
-		editor.setReadOnly(readOnly);
-
-        editor.setFontSize(20);
-
-		$('#nav_ber').height($('#file_tab').height() + 4);
-		$('#editor').height(wh - ( navHeight + resultHeight + $('#nav_ber').height()) );
-
-        if(readOnly) onclickDisable();
-	}
-
-	var timer = false;
-
-	$(window).resize(function() {
-		if (timer !== false) {
-	    clearTimeout(timer);
-		}
-		timer = setTimeout(function() {
-			console.log('resized');
-			resize();
-		}, 200);
-	});
 };
 
 var editor;
@@ -66,6 +24,57 @@ var filelife	= [];
 var filelength	= 0;
 var editnumber	= 0;
 var filenumber	= 0;
+
+var navHeight;
+var resultHeight;
+var sideWidth;
+var side_topHeight;
+var berheight;
+
+var aceFontSize = 20;
+
+var timer = false;
+
+$(window).resize(function() {
+	if (timer !== false) {
+    clearTimeout(timer);
+	}
+	timer = setTimeout(function() {
+		console.log('resized');
+		resize();
+	}, 200);
+});
+
+function resize() {
+
+	var wh = $(window).height();
+	var ww = $(window).width();
+
+	$('#contain').height(wh - navHeight);
+	$('#contain').width(ww);
+	$('#editor').height(wh - ( navHeight + resultHeight + berheight) );
+	$('#room_menber').height(wh - ( navHeight + side_topHeight ) );
+	$('#main').width( ww );
+
+	editor = ace.edit("editor");
+	editor.$blockScrolling = Infinity;
+	editor.getSession().setUseWrapMode(true);
+	editor.setOptions({
+		enableBasicAutocompletion: true,
+		enableSnippets: true,
+		enableLiveAutocompletion: true
+	});
+	editor.setTheme("ace/theme/monokai");
+	editor.getSession().setMode("ace/mode/" + editor_highlight);
+	editor.setReadOnly(readOnly);
+
+	editor.setFontSize(aceFontSize);
+
+	$('#nav_ber').height($('#file_tab').height() + 4);
+	$('#editor').height(wh - ( navHeight + resultHeight + $('#nav_ber').height()) );
+
+	if(readOnly) onclickDisable();
+}
 
 function changeTab(tabName) {
 	$('#output_tab').hide();
@@ -190,7 +199,7 @@ function fileAdd() {
 	editor.setTheme("ace/theme/monokai");
 	editor.getSession().setMode("ace/mode/" + editor_highlight);
 
-    editor.setFontSize(13);
+    editor.setFontSize(aceFontSize);
 
     if(!readOnly) fileRename(filenumber,13);
 
